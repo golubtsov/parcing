@@ -2,30 +2,6 @@ const { JSDOM } = require('jsdom');
 const data_odezhda = [];
 const data_obuv = [];
 
-class Book{
-    constructor(name, price){
-        this.name = name,
-        this.price = price
-    }
-}
-async function parsing(){
-    try {
-        const dom = await JSDOM.fromURL('https://books.toscrape.com/');
-        const doc = dom.window.document;
-        let books = doc.querySelectorAll('article.product_pod');
-        books.forEach((book) => {
-            let book_name = book.querySelector('h3>a').getAttribute('title');
-            let book_price = book.querySelector('p.price_color').innerHTML;
-            let el_book = new Book(book_name, book_price);
-            data.push(el_book);
-        });
-        console.log(JSON.stringify(data, null, ' '));
-    } catch (e) {
-        console.log(e);
-    }
-}
-// parsing();
-
 class Product{
     constructor(name, producer, price, url, link){
         this.name = name,
@@ -62,7 +38,6 @@ async function get_data(param, arr){
             let el_prod = new Product(prod_name, prod_producer, prod_price, prod_url, link);
             arr.push(el_prod);
         }
-        // console.log(JSON.stringify(arr, null, ' '));
     } catch (e) {
         console.log(e);
     }
@@ -70,3 +45,4 @@ async function get_data(param, arr){
 }
 
 get_data('odezhda/odezhda_dlya_okhoty/', data_odezhda);
+// get_data('obuv/obuv_dlya_turizma/', data_obuv);

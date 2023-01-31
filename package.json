@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "jsdom": "^21.1.0"
+    "jsdom": "^21.1.0",
+    "mysql": "^2.18.1"
   }
 }
