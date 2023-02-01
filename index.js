@@ -20,21 +20,6 @@ class Product {
     }
 }
 
-function create_json(arr, name_file) {
-    jsonfile.writeFile(`${name_file}.json`, arr);
-    console.log('write');
-}
-
-async function get_more_info(arr, name_file) {
-    for (const el of arr) {
-        const dom = await JSDOM.fromURL(`${el.link}`);
-        const doc = dom.window.document;
-        let prod_descript = doc.querySelector('div.text>p').innerHTML;
-        el.about = prod_descript;
-    }
-    create_json(arr, name_file);
-}
-
 async function get_data(https, arr, name_file) {
     try {
         const dom = await JSDOM.fromURL(`${https}`);
@@ -54,6 +39,21 @@ async function get_data(https, arr, name_file) {
         console.log(e);
     }
     get_more_info(arr, name_file);
+}
+
+async function get_more_info(arr, name_file) {
+    for (const el of arr) {
+        const dom = await JSDOM.fromURL(`${el.link}`);
+        const doc = dom.window.document;
+        let prod_descript = doc.querySelector('div.text>p').innerHTML;
+        el.about = prod_descript;
+    }
+    create_json(arr, name_file);
+}
+
+function create_json(arr, name_file) {
+    jsonfile.writeFile(`./json_files/${name_file}.json`, arr);
+    console.log('write');
 }
 
 get_data('https://trofey.ru/catalog/odezhda/odezhda_dlya_aktivnogo_otdykha/muzhskaya/?ORDER=NEW', data_odezhda, 'data_odezhda');
