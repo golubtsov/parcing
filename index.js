@@ -1,13 +1,15 @@
 const { JSDOM } = require('jsdom');
 const jsonfile = require('jsonfile');
-let boolean_el = require('./db.js');
-const send_data = require('./db.js');
 const https = 'https://trofey.ru/catalog/';
 
 const data_odezhda = [];
-const data_obuv = [];
 const data_equipment = [];
 const data_rope = [];
+const data_sets = [];
+const data_shoes = [];
+const data_sleepbag = [];
+const data_tents = [];
+const data_cookware = [];
 class Product {
     constructor(id, name, producer, price, url, link) {
         this.id = id,
@@ -56,6 +58,10 @@ async function get_data(param, arr, name_file) {
 }
 
 get_data('odezhda/odezhda_dlya_okhoty/', data_odezhda, 'data_odezhda');
-get_data('obuv/obuv_dlya_turizma/', data_obuv, 'data_obuv');
+get_data('obuv/obuv_dlya_turizma/', data_shoes, 'data_shoes');
 get_data('turizm/', data_equipment, 'data_equipment');
-get_data('turizm/?digiSearch=true&term=Веревки&params=%7Csort%3DDEFAULT', )
+get_data('turizm/?digiSearch=true&term=Веревки&params=%7Csort%3DDEFAULT', data_rope, 'data_rope');
+get_data('turizm/?digiSearch=true&term=Посуда&params=%7Csort%3DDEFAULT', data_cookware, 'data_cookware');
+get_data('turizm/?digiSearch=true&term=Наборы&params=%7Csort%3DDEFAULT', data_sets, 'data_sets');
+get_data('turizm/?digiSearch=true&term=спальники&params=%7Csort%3DDEFAULT', data_sleepbag, 'data_sleepbag');
+get_data('turizm/?digiSearch=true&term=Палатки&params=%7Csort%3DDEFAULT', data_tents, 'data_tents');

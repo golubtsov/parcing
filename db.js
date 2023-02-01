@@ -6,18 +6,18 @@ const config = {
     password: 'root',
     database: 'website_carabin'
 };
-// let file = require('./data.json');
+let file = require('./data.json');
 
 const pool = mysql.createPool(config);
 
 
-// function read_file(){
-//     for (const el of file) {
-//         send_data(`${el.id}`, 1, `${el.name}`, `${el.url}`, el.price, `${el.about}`, `${el.producer}`);
-//     }
-//     console.log('send');
-// }
-// read_file();
+function read_file(){
+    for (const el of file) {
+        send_data(`${el.id}`, 1, `${el.name}`, `${el.url}`, el.price, `${el.about}`, `${el.producer}`);
+    }
+    console.log('send');
+}
+read_file();
 
 function create_txt(str) {
     jsonfile.writeFile('sql_comand.txt', str);
