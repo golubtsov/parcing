@@ -2,42 +2,44 @@ const { JSDOM } = require('jsdom');
 const jsonfile = require('jsonfile');
 let boolean_el = require('./db.js');
 const send_data = require('./db.js');
-const data_odezhda = [];
-const data_obuv = [];
 const https = 'https://trofey.ru/catalog/';
 
-class Product{
-    constructor(id, name, producer, price, url, link){
+const data_odezhda = [];
+const data_obuv = [];
+const data_equipment = [];
+const data_rope = [];
+class Product {
+    constructor(id, name, producer, price, url, link) {
         this.id = id,
-        this.name = name,
-        this.producer = producer,
-        this.price = price,
-        this.url = url,
-        this.link = link
+            this.name = name,
+            this.producer = producer,
+            this.price = price,
+            this.url = url,
+            this.link = link
     }
 }
 
-function create_json(arr){
-    jsonfile.writeFile('data.json', arr);
+function create_json(arr, name_file) {
+    jsonfile.writeFile(`${name_file}.json`, arr);
     console.log('write');
 }
 
-async function get_more_info(arr){
+async function get_more_info(arr, name_file) {
     for (const el of arr) {
         const dom = await JSDOM.fromURL(`${el.link}`);
         const doc = dom.window.document;
         let prod_descript = doc.querySelector('div.text>p').innerHTML;
         el.about = prod_descript;
     }
-    create_json(arr);
+    create_json(arr, name_file);
 }
 
-async function get_data(param, arr){
+async function get_data(param, arr, name_file) {
     try {
         const dom = await JSDOM.fromURL(`${https}${param}`);
         const doc = dom.window.document;
         let products = doc.querySelectorAll('div.item-e');
-        for (let i = 23; i < 25; i++) {
+        for (let i = 23; i < 30; i++) {
             let prod_id = products[i].querySelector('div.text>p>a').id;
             let prod_name = products[i].querySelector('div.text>p>a>span').innerHTML;
             let prod_producer = products[i].querySelector('div.text>div.item-list-title>span').textContent;
@@ -50,8 +52,10 @@ async function get_data(param, arr){
     } catch (e) {
         console.log(e);
     }
-    get_more_info(arr);
+    get_more_info(arr, name_file);
 }
 
-get_data('odezhda/odezhda_dlya_okhoty/', data_odezhda);
-// get_data('obuv/obuv_dlya_turizma/', data_obuv);
+get_data('odezhda/odezhda_dlya_okhoty/', data_odezhda, 'data_odezhda');
+get_data('obuv/obuv_dlya_turizma/', data_obuv, 'data_obuv');
+get_data('turizm/', data_equipment, 'data_equipment');
+get_data('turizm/?digiSearch=true&term=Веревки&params=%7Csort%3DDEFAULT', )
