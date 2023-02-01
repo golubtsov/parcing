@@ -1,6 +1,5 @@
 const { JSDOM } = require('jsdom');
 const jsonfile = require('jsonfile');
-const https = 'https://trofey.ru/catalog/';
 
 const data_odezhda = [];
 const data_equipment = [];
@@ -36,12 +35,12 @@ async function get_more_info(arr, name_file) {
     create_json(arr, name_file);
 }
 
-async function get_data(param, arr, name_file) {
+async function get_data(https, arr, name_file) {
     try {
-        const dom = await JSDOM.fromURL(`${https}${param}`);
+        const dom = await JSDOM.fromURL(`${https}`);
         const doc = dom.window.document;
         let products = doc.querySelectorAll('div.item-e');
-        for (let i = 23; i < 30; i++) {
+        for (let i = 19; i < 25; i++) {
             let prod_id = products[i].querySelector('div.text>p>a').id;
             let prod_name = products[i].querySelector('div.text>p>a>span').innerHTML;
             let prod_producer = products[i].querySelector('div.text>div.item-list-title>span').textContent;
@@ -57,11 +56,18 @@ async function get_data(param, arr, name_file) {
     get_more_info(arr, name_file);
 }
 
-get_data('odezhda/odezhda_dlya_okhoty/', data_odezhda, 'data_odezhda');
-get_data('obuv/obuv_dlya_turizma/', data_shoes, 'data_shoes');
-get_data('turizm/', data_equipment, 'data_equipment');
-get_data('turizm/?digiSearch=true&term=Веревки&params=%7Csort%3DDEFAULT', data_rope, 'data_rope');
-get_data('turizm/?digiSearch=true&term=Посуда&params=%7Csort%3DDEFAULT', data_cookware, 'data_cookware');
-get_data('turizm/?digiSearch=true&term=Наборы&params=%7Csort%3DDEFAULT', data_sets, 'data_sets');
-get_data('turizm/?digiSearch=true&term=спальники&params=%7Csort%3DDEFAULT', data_sleepbag, 'data_sleepbag');
-get_data('turizm/?digiSearch=true&term=Палатки&params=%7Csort%3DDEFAULT', data_tents, 'data_tents');
+get_data('https://trofey.ru/catalog/odezhda/odezhda_dlya_aktivnogo_otdykha/muzhskaya/?ORDER=NEW', data_odezhda, 'data_odezhda');
+
+get_data('https://trofey.ru/catalog/obuv/obuv_dlya_turizma/', data_shoes, 'data_shoes');
+
+get_data('https://trofey.ru/catalog/turizm/', data_equipment, 'data_equipment');
+
+get_data('https://trofey.ru/catalog/turizm/snaryazhenie_dlya_alpinizma/', data_rope, 'data_rope'); !!!!
+
+get_data('https://trofey.ru/catalog/turizm/nabory_dlya_piknika/', data_cookware, 'data_cookware');
+
+get_data('https://trofey.ru/catalog/turizm/podarochnaya_i_suvenirnaya_produktsiya/', data_sets, 'data_sets');
+
+get_data('https://trofey.ru/catalog/turizm/spalniki/', data_sleepbag, 'data_sleepbag');
+
+get_data('https://trofey.ru/catalog/turizm/palatki/', data_tents, 'data_tents');
