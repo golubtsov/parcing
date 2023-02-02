@@ -9,6 +9,8 @@ const data_shoes = [];
 const data_sleepbag = [];
 const data_tents = [];
 const data_cookware = [];
+
+// класс, на основе которого будут создаваться карточки продуктов
 class Product {
     constructor(id, name, producer, price, url, link) {
         this.id = id,
@@ -20,12 +22,13 @@ class Product {
     }
 }
 
+// ф-ия, которая начинает парсить, она получает три параметра: адрес страницы, которую будем парсить, название массива, в который будем помещать собранные данные и название json-файла, в который будем записывать данные
 async function get_data(https, arr, name_file) {
     try {
         const dom = await JSDOM.fromURL(`${https}`);
         const doc = dom.window.document;
         let products = doc.querySelectorAll('div.item-e');
-        for (let i = 19; i < 25; i++) {
+        for (let i = 26; i < 30; i++) {
             let prod_id = products[i].querySelector('div.text>p>a').id;
             let prod_name = products[i].querySelector('div.text>p>a>span').innerHTML;
             let prod_producer = products[i].querySelector('div.text>div.item-list-title>span').textContent;
@@ -41,6 +44,7 @@ async function get_data(https, arr, name_file) {
     get_more_info(arr, name_file);
 }
 
+// чтобы получить описание товара, в св-во класса кладем ссылку на страницу этого товара, данная ф-ия берет эту ссылку и парсит страницу товара
 async function get_more_info(arr, name_file) {
     for (const el of arr) {
         const dom = await JSDOM.fromURL(`${el.link}`);
@@ -51,6 +55,7 @@ async function get_more_info(arr, name_file) {
     create_json(arr, name_file);
 }
 
+// записываем полученные данные в json-файл
 function create_json(arr, name_file) {
     jsonfile.writeFile(`./json_files/${name_file}.json`, arr);
     console.log('write');
